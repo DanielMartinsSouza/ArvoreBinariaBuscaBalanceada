@@ -4,7 +4,7 @@ import No.Node;
 
 public class ABBTree<T extends Comparable<T>> {
     public Node<T> root;
-    public int comparisonsCounter;
+    public int comparisonsCounterABB;
     public int totalNodes;
     public int totalInsertedNodes;
 
@@ -93,6 +93,12 @@ public class ABBTree<T extends Comparable<T>> {
         return maxNode.key;
     }
 
+    public int getMinimumHeight() {
+        int totalNodes = getTotalNumberOfNodes();
+        return (int) (Math.ceil(Math.log(totalNodes + 1) / Math.log(2))) - 1;
+    }
+
+
     //Metodo onde realiza a inserção na arvore
     public void insertElement(T key) {
         System.out.println("Inserindo "+key);
@@ -104,24 +110,48 @@ public class ABBTree<T extends Comparable<T>> {
         }
 
         if (key.compareTo(node.key) < 0) {
-            comparisonsCounter++;
+            comparisonsCounterABB++;
             node.leftNode = insertElementRecursive(node.leftNode, key);
-        } else if (key.compareTo(node.key) > 0) {
-            comparisonsCounter++;
-            node.rightNode = insertElementRecursive(node.rightNode, key);
         } else {
-            node.frequency++;
+            comparisonsCounterABB++;
+            if (key.compareTo(node.key) > 0) {
+                comparisonsCounterABB++;
+                node.rightNode = insertElementRecursive(node.rightNode, key);
+            } else {
+                comparisonsCounterABB++;
+                node.frequency += 1;
+            }
         }
 
         return node;
     }
 
-    //Busca por um No e caso não encontre o insere
-    public void searchInsert(T key) {
-        if (!searchElement(key)) {
-            insertElement(key);
-        }
+    public void searchInsertElement(T key) {
+        System.out.println("Inserindo "+key);
+        root = insertElementRecursive(root, key);
     }
+    private Node<T> searchInsertElementRecursive(Node<T> node, T key) {
+        if (node == null) {
+            return new Node<>(key);
+        }
+
+        if (key.compareTo(node.key) < 0) {
+            comparisonsCounterABB++;
+            node.leftNode = insertElementRecursive(node.leftNode, key);
+        } else {
+            comparisonsCounterABB++;
+            if (key.compareTo(node.key) > 0) {
+                comparisonsCounterABB++;
+                node.rightNode = insertElementRecursive(node.rightNode, key);
+            } else {
+                comparisonsCounterABB++;
+                node.frequency += 1;
+            }
+        }
+
+        return node;
+    }
+
 
     //busca o valor a ser removido
     public void remove(T key) {
@@ -133,20 +163,24 @@ public class ABBTree<T extends Comparable<T>> {
         }
 
         if (key.compareTo(node.key) < 0) {
-            comparisonsCounter++;
+            comparisonsCounterABB++;
             node.leftNode = removeRecursive(node.leftNode, key);
-        } else if (key.compareTo(node.key) > 0) {
-            comparisonsCounter++;
-            node.rightNode = removeRecursive(node.rightNode, key);
         } else {
-            if (node.leftNode == null) {
-                return node.rightNode;
-            } else if (node.rightNode == null) {
-                return node.leftNode;
-            }
+            comparisonsCounterABB++;
+            if (key.compareTo(node.key) > 0) {
+                comparisonsCounterABB++;
+                node.rightNode = removeRecursive(node.rightNode, key);
+            } else {
+                comparisonsCounterABB++;
+                if (node.leftNode == null) {
+                    return node.rightNode;
+                } else if (node.rightNode == null) {
+                    return node.leftNode;
+                }
 
-            node.key = minValueNode(node.rightNode);
-            node.rightNode = removeRecursive(node.rightNode, node.key);
+                node.key = minValueNode(node.rightNode);
+                node.rightNode = removeRecursive(node.rightNode, node.key);
+            }
         }
         return node;
     }
@@ -171,13 +205,17 @@ public class ABBTree<T extends Comparable<T>> {
         }
 
         if (key.compareTo(node.key) < 0) {
-            comparisonsCounter++;
+            comparisonsCounterABB++;
             return searchElementRecursive(node.leftNode, key);
-        } else if (key.compareTo(node.key) > 0) {
-            comparisonsCounter++;
-            return searchElementRecursive(node.rightNode, key);
         } else {
-            return true;
+            comparisonsCounterABB++;
+            if (key.compareTo(node.key) > 0) {
+                comparisonsCounterABB++;
+                return searchElementRecursive(node.rightNode, key);
+            } else {
+                comparisonsCounterABB++;
+                return true;
+            }
         }
     }
 

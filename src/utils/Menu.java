@@ -31,19 +31,16 @@ public class Menu {
                 7 - Altura da arvore nas Arvores AVL e ABB
                 8 - Numero total de comparações nas Arvores AVL e ABB
                 9 - Numero total de rotações na Arvores AVL
-                10 - Numero de rotações LL na Arvores AVL
-                11 - Numero de rotações RR na Arvores AVL
-                12 - Numero de rotações LR na Arvores AVL
-                13 - Numero de rotações RL na Arvores AVL
-                14 - Médias de comparações por palavras nas Arvores AVL e ABB
-                15 - Média de rotações por palavras distintas na Arvores AVL
-                16 - Imprimir arvores Preorder
-                17 - Imprimir arvores Inorder
-                18 - Imprimir arvores Postorder
-                19 - Excluir arvores
-                20 - Menor valor da arvore
-                21 - Maior valor da arvore
-                22 - Sair
+                10 - Altura minima
+                11 - Médias de comparações por palavras nas Arvores AVL e ABB
+                12 - Média de rotações por palavras distintas na Arvores AVL
+                13 - Imprimir arvores Preorder
+                14 - Imprimir arvores Inorder
+                15 - Imprimir arvores Postorder
+                16 - Excluir arvores
+                17 - Menor valor da arvore
+                18 - Maior valor da arvore
+                19 - Sair
                 """);
     }
 }

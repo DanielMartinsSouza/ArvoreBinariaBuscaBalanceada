@@ -45,6 +45,7 @@ public class Main {
                     } catch (FileNotFoundException e) {
                         System.err.println("Arquivo não encontrado: " + e.getMessage());
                     }
+
                     try {
                         Scanner scannerABB = new Scanner(new File(caminhoArquivo));
                         System.out.println("Inserindo palavras na Arvore ABB");
@@ -53,7 +54,7 @@ public class Main {
                             String[] palavras = linha.split("\\s+");
                             for (String palavra : palavras) {
                                 if (!palavra.equals("")) {
-                                    ABB.searchInsert(palavra);
+                                    ABB.searchInsertElement(palavra);
                                 }
                             }
                         }
@@ -69,7 +70,7 @@ public class Main {
                     //Leitura do valor a ser inserido
                     String inserirNo = sc.nextLine();
                     AVL.searchInsert(inserirNo);
-                    ABB.searchInsert(inserirNo);
+                    ABB.searchInsertElement(inserirNo);
                     System.out.println("No inserido");
                     Thread.sleep(3000);
                     break;
@@ -109,48 +110,41 @@ public class Main {
                     break;
                 case 8:
                     System.out.println("Comparações (AVL): " + AVL.comparisonsCounter);
-                    System.out.println("Comparações (ABB): " + ABB.comparisonsCounter);
+                    System.out.println("Comparações (ABB): " + ABB.comparisonsCounterABB);
                     Thread.sleep(3000);
                     break;
                 case 9:
                     System.out.println("Total de rotações: " + AVL.getTotalRotatesGlobal());
-                    Thread.sleep(3000);
-                    break;
-                case 10:
                     System.out.println("Rotações LL: " + AVL.globalRotationCounterLL);
-                    Thread.sleep(3000);
-                    break;
-                case 11:
                     System.out.println("rotações RR: " + AVL.globalRotationCounterRR);
-                    Thread.sleep(3000);
-                    break;
-                case 12:
                     System.out.println("Rotações LR" + AVL.globalRotationCounterLR);
-                    Thread.sleep(3000);
-                    break;
-                case 13:
                     System.out.println("Rotações RL" + AVL.globalRotationCounterRL);
                     Thread.sleep(3000);
                     break;
-                case 14:
+                case 10:
+                    System.out.println("Altura minima (AVL): "+AVL.getMinimumHeight());
+                    System.out.println("Altura minima (ABB): "+ABB.getMinimumHeight());
+                    Thread.sleep(3000);
+                    break;
+                case 11:
                     int comparacoesAVL = AVL.comparisonsCounter;
                     int totalPalavrasAVL = AVL.getTotalFrequency();
                     int mediaComparacaoPalavrasAVL = comparacoesAVL / totalPalavrasAVL;
                     System.out.println("Media de comparações por palavras (AVL): "+mediaComparacaoPalavrasAVL);
-                    int comparacoesABB = ABB.comparisonsCounter;
+                    int comparacoesABB = ABB.comparisonsCounterABB;
                     int totalPalavrasABB = ABB.getTotalFrequency();
                     int mediaComparacaoPalavrasABB = comparacoesABB / totalPalavrasABB;
                     System.out.println("Media de comparações por palavras (ABB): "+mediaComparacaoPalavrasABB);
                     Thread.sleep(3000);
                     break;
-                case 15:
+                case 12:
                     double rotateAVL = AVL.getTotalRotatesGlobal();
                     double palavrasAVL = AVL.getTotalNumberOfNodes();
                     double mediaComparacaoPalavrasDistintasAVL = rotateAVL / palavrasAVL;
                     System.out.printf("Média de rotações por palavras distintas: %.2f%n", mediaComparacaoPalavrasDistintasAVL);
                     Thread.sleep(3000);
                     break;
-                case 16:
+                case 13:
                     System.out.println("AVL preorder:");
                     AVL.preorderTraversal();
                     Thread.sleep(2000);
@@ -158,7 +152,7 @@ public class Main {
                     ABB.preorderTraversal();
                     Thread.sleep(2000);
                     break;
-                case 17:
+                case 14:
                     System.out.println("AVL inorder:");
                     AVL.inorderTraversal();
                     Thread.sleep(2000);
@@ -166,7 +160,7 @@ public class Main {
                     ABB.inorderTraversal();
                     Thread.sleep(2000);
                     break;
-                case 18:
+                case 15:
                     System.out.println("AVL postorder:");
                     AVL.postorderTraversal();
                     Thread.sleep(2000);
@@ -174,24 +168,24 @@ public class Main {
                     ABB.postorderTraversal();
                     Thread.sleep(2000);
                     break;
-                case 19:
+                case 16:
                     System.out.println("Excluindo...");
                     AVL.clearTree();
                     ABB.clearTree();
                     System.out.println("Arvore AVL e ABB excluida");
                     Thread.sleep(2000);
                     break;
-                case 20:
+                case 17:
                     System.out.println("Menor valor da AVL: " + AVL.minValueNode());
                     System.out.println("Menor valor da ABB: " + ABB.minValueNode());
                     Thread.sleep(2000);
                     break;
-                case 21:
+                case 18:
                     System.out.println("Maior valor da AVL: " + AVL.maxValueNode());
                     System.out.println("Maior valor da ABB: " + ABB.maxValueNode());
                     Thread.sleep(2000);
                     break;
-                case 22:
+                case 19:
                     break;
                 default:
                     Menu.invalidOptionMessage();
@@ -200,7 +194,7 @@ public class Main {
             }
 
             Menu.clearConsole();
-        } while (option != 22);
+        } while (option != 19);
 
         Menu.exitMessage();
         ScannerSingleton.closeScanner();

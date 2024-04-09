@@ -38,7 +38,6 @@ public class AVLTree<T extends Comparable<T>> {
         totalNodes = getTotalNumberOfNodesRecursive(root);
         return totalNodes;
     }
-
     private int getTotalNumberOfNodesRecursive(Node<T> node) {
         if (node == null) return 0;
         else {
@@ -53,7 +52,6 @@ public class AVLTree<T extends Comparable<T>> {
     public int getHeight() {
         return getHeightRecursive(root) - 1; //-1 por conta que inicia no 0
     }
-
     private int getHeightRecursive(Node<T> node) {
 
         if (node == null) {
@@ -71,7 +69,6 @@ public class AVLTree<T extends Comparable<T>> {
         totalInsertedNodes = getTotalFrequencyRecursive(root);
         return totalInsertedNodes;
     }
-
     private int getTotalFrequencyRecursive(Node<T> node) {
         if (node == null) return 0;
         else {
@@ -104,6 +101,11 @@ public class AVLTree<T extends Comparable<T>> {
         return maxNode.key;
     }
 
+    public int getMinimumHeight() {
+        int totalNodes = getTotalNumberOfNodes();
+        return (int) (Math.ceil(Math.log(totalNodes + 1) / Math.log(2))) - 1;
+    }
+
     //Obtem o menor valor e o deleta
     private Node<T> delMin(Node<T> node, Node<T> rightNode, Balance h) {
         if (rightNode.leftNode != null) {
@@ -125,7 +127,6 @@ public class AVLTree<T extends Comparable<T>> {
         Balance h = new Balance(false);
         root = removeRecursive(root, key, h);
     }
-
     private Node<T> removeRecursive(Node<T> node, T key, Balance h) {
 
         if (node == null) return node;
@@ -137,33 +138,37 @@ public class AVLTree<T extends Comparable<T>> {
                 //Realiza o balanceamento após a remoção da arvore direita
                 node = balanceL(node, h);
             }
-        } else if (key.compareTo(node.key) > 0) {
-            comparisonsCounter++;
-            node.rightNode = removeRecursive(node.rightNode, key, h);
-            if (h.balanceFactor) {
-                //Realiza o balanceamento após a remoção da arvore esquerda
-                node = balanceR(node, h);
-            }
         } else {
-            Node<T> nodeTemp = node;
-
-            if (nodeTemp.rightNode == null) {
-                //Remoção do No e atribui o No filho da esquerda ao No ao No Pai
-                node = nodeTemp.leftNode;
-                h.balanceFactor = true;
-            } else if (nodeTemp.leftNode == null) {
-                //Remoção do No e atribui o No filho da direita ao No ao No Pai
-                node = nodeTemp.rightNode;
-                h.balanceFactor = true;
-            } else {
-                //Caso quando o No tem dois filhos
-                //Ocore a remoção do No quando
-                nodeTemp = delMin(node.rightNode, nodeTemp, h);
-                node.key = nodeTemp.key;
-                node.frequency = nodeTemp.frequency;
+            comparisonsCounter++;
+            if (key.compareTo(node.key) > 0) {
+                comparisonsCounter++;
+                node.rightNode = removeRecursive(node.rightNode, key, h);
                 if (h.balanceFactor) {
-                    //Realiza o balanceamentow
+                    //Realiza o balanceamento após a remoção da arvore esquerda
                     node = balanceR(node, h);
+                }
+            } else {
+                comparisonsCounter++;
+                Node<T> nodeTemp = node;
+
+                if (nodeTemp.rightNode == null) {
+                    //Remoção do No e atribui o No filho da esquerda ao No ao No Pai
+                    node = nodeTemp.leftNode;
+                    h.balanceFactor = true;
+                } else if (nodeTemp.leftNode == null) {
+                    //Remoção do No e atribui o No filho da direita ao No ao No Pai
+                    node = nodeTemp.rightNode;
+                    h.balanceFactor = true;
+                } else {
+                    //Caso quando o No tem dois filhos
+                    //Ocore a remoção do No quando
+                    nodeTemp = delMin(node.rightNode, nodeTemp, h);
+                    node.key = nodeTemp.key;
+                    node.frequency = nodeTemp.frequency;
+                    if (h.balanceFactor) {
+                        //Realiza o balanceamentow
+                        node = balanceR(node, h);
+                    }
                 }
             }
         }
@@ -180,11 +185,6 @@ public class AVLTree<T extends Comparable<T>> {
         if (nodeA == null) {
             nodeA = new Node<T>(key);
             h.balanceFactor = true;
-        }
-
-        if (key.compareTo(nodeA.key) == 0) {
-            comparisonsCounter++;
-            nodeA.frequency = nodeA.frequency + 1;
         }
 
         //insert a node in case when the given element is lesser than the element of the root node
@@ -214,6 +214,7 @@ public class AVLTree<T extends Comparable<T>> {
                 }
             }
         } else {
+            comparisonsCounter++;
             if (key.compareTo(nodeA.key) > 0) {
                 comparisonsCounter++;
                 nodeA.rightNode = insertElementRecursive(key, nodeA.rightNode, h);
@@ -239,6 +240,9 @@ public class AVLTree<T extends Comparable<T>> {
                             h.balanceFactor = false;
                     }
                 }
+            }else{
+                nodeA.frequency += 1;
+                comparisonsCounter++;
             }
         }
         return nodeA;
@@ -260,8 +264,8 @@ public class AVLTree<T extends Comparable<T>> {
     }
     private Node<T> searchInsertRecursive(T key, Node<T> nodeA, Balance h) {
         if (nodeA == null) {
-            nodeA = new Node<T>(key);
             h.balanceFactor = true;
+            return new Node<T>(key);
         }
 
         if (key.compareTo(nodeA.key) < 0) {
@@ -293,6 +297,7 @@ public class AVLTree<T extends Comparable<T>> {
                 }
             }
         } else {
+            comparisonsCounter++;
             if (key.compareTo(nodeA.key) > 0) {
                 comparisonsCounter++;
                 nodeA.rightNode = searchInsertRecursive(key, nodeA.rightNode, h);
@@ -322,7 +327,8 @@ public class AVLTree<T extends Comparable<T>> {
                     }
                 }
             } else {
-                nodeA.frequency = nodeA.frequency + 1;
+                comparisonsCounter++;
+                nodeA.frequency += 1;
             }
         }
         return nodeA;
@@ -362,7 +368,6 @@ public class AVLTree<T extends Comparable<T>> {
     public void inorderTraversal() {
         inorderTraversal(root);
     }
-
     private void inorderTraversal(Node<T> head) {
         if (head != null) {
             inorderTraversal(head.leftNode);
@@ -375,7 +380,6 @@ public class AVLTree<T extends Comparable<T>> {
     public void preorderTraversal() {
         preorderTraversal(root);
     }
-
     private void preorderTraversal(Node<T> head) {
         if (head != null) {
             System.out.print(head.key + " ");
@@ -388,7 +392,6 @@ public class AVLTree<T extends Comparable<T>> {
     public void postorderTraversal() {
         postorderTraversal(root);
     }
-
     private void postorderTraversal(Node<T> head) {
         if (head != null) {
             postorderTraversal(head.leftNode);
