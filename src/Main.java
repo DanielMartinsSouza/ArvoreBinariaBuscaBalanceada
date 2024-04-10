@@ -87,9 +87,9 @@ public class Main {
                     System.out.println("Valor a ser encontrado: ");
                     String encontrarNo = sc.nextLine();
                     if (AVL.search(encontrarNo) && ABB.searchElement(encontrarNo)) {
-                        System.out.println("No com valor" + encontrarNo + "encontrado");
+                        System.out.println("No com valor " + encontrarNo + " encontrado");
                     }else {
-                        System.out.println("No com valor" + encontrarNo + "não encontrado");
+                        System.out.println("No com valor " + encontrarNo + " não encontrado");
                     }
                     Thread.sleep(3000);
                     break;
@@ -117,8 +117,8 @@ public class Main {
                     System.out.println("Total de rotações: " + AVL.getTotalRotatesGlobal());
                     System.out.println("Rotações LL: " + AVL.globalRotationCounterLL);
                     System.out.println("rotações RR: " + AVL.globalRotationCounterRR);
-                    System.out.println("Rotações LR" + AVL.globalRotationCounterLR);
-                    System.out.println("Rotações RL" + AVL.globalRotationCounterRL);
+                    System.out.println("Rotações LR: " + AVL.globalRotationCounterLR);
+                    System.out.println("Rotações RL: " + AVL.globalRotationCounterRL);
                     Thread.sleep(3000);
                     break;
                 case 10:
